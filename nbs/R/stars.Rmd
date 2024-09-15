@@ -1,0 +1,50 @@
+---
+title: "Data Cubes"
+output: html_notebook
+---
+
+
+```{r}
+library(stars)
+library(sf)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+fapar_ds <- read_stars("data/fapar3.nc")
+# Assign the correct CRS 
+#fapar_ds <- st_set_crs(fapar_ds, 3857) #3857. 4326
+
+fapar_ds
+```
+
+```{r}
+# Read the shapefile
+nepal <- st_read("data/nepal/landuse.shp")
+
+# Filter the forest
+forest <- nepal %>%
+  filter(Category == "Forest")
+#forest <- st_transform(forest, crs = 3857)
+forest = forest[1:50, ]
+```
+```{r}
+# Plot the data
+ggplot() +
+  geom_sf(data = forest, fill = "green", color = "darkgreen") +
+  labs(title = "Forest Areas in Nepal") +
+  theme_minimal()
+```
+```{r}
+a = aggregate(fapar_ds, by = forest, FUN = min)
+```
+
+```{r}
+a
+```
+
+
+```{r}
+plot(a, max.plot = 23, border = 'grey', lwd = .5)
+```
