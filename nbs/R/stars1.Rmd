@@ -1,18 +1,24 @@
 ---
 title: "Data Cubes"
-output:
-  html_document:
-    df_print: paged
+output: html_document
+date: "2024-09-15"
 ---
 
 
-```{r}
+```{r cars}
 library(stars)
 library(sf)
 library(dplyr)
 library(ggplot2)
 ```
 
+
+
+```{r pressure, echo=FALSE}
+fapar_ds <- read_stars("data/fapar3.nc")
+
+fapar_ds
+```
 
 ```{r}
 # Read the shapefile
@@ -21,7 +27,6 @@ nepal <- st_read("data/nepal/landuse.shp")
 # Filter the forest
 forest <- nepal %>%
   filter(Category == "Forest")
-#forest <- st_transform(forest, crs = 3857)
 forest = forest[1:50, ]
 ```
 ```{r}
@@ -31,16 +36,18 @@ ggplot() +
   labs(title = "Forest Areas in Nepal") +
   theme_minimal()
 ```
+
 ```{r}
 a = aggregate(fapar_ds, by = forest, FUN = min)
 ```
 
+
 ```{r}
 a
 ```
-
-
 ```{r}
 plot(a, max.plot = 23, border = 'grey', lwd = .5)
 ```
+
+
 

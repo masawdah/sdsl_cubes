@@ -12,6 +12,10 @@ library(sf)
 library(dplyr)
 library(ggplot2)
 ```
+```{r}
+fapar_ds <- read_stars("./data/fapar3.nc")
+fapar_ds
+```
 
 
 ```{r}
